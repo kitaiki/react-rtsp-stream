@@ -1,24 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useRef, useState } from 'react';
+
+declare global {
+  interface Window {
+    JSMpeg: any;
+  }
+}
+const { JSMpeg } = window;
 
 function App() {
+  const [url] = useState('ws://localhost:9999');
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    new JSMpeg.Player(url, { canvas: canvasRef.current });
+  }, [url]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <canvas ref={canvasRef}></canvas>
     </div>
   );
 }
